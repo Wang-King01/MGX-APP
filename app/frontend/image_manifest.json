@@ -1,0 +1,37 @@
+{
+  "status": "success",
+  "results": [
+    {
+      "status": "success",
+      "filename": "hero-hangzhou-lakeside.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cuaicalaa/hero-hangzhou-lakeside.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cuaicalaa/hero-hangzhou-lakeside.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cuaicalaa/hero-hangzhou-lakeside.png"
+    },
+    {
+      "status": "success",
+      "filename": "activity-forest-walk.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cunacak7q/activity-forest-walk.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cunacak7q/activity-forest-walk.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cunacak7q/activity-forest-walk.png"
+    },
+    {
+      "status": "success",
+      "filename": "activity-art-gallery.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cuzycak7a/activity-art-gallery.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cuzycak7a/activity-art-gallery.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cuzycak7a/activity-art-gallery.png"
+    },
+    {
+      "status": "success",
+      "filename": "activity-coffee-street.jpg",
+      "url": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cvgycak6q/activity-coffee-street.png",
+      "path": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cvgycak6q/activity-coffee-street.png",
+      "absolute_path": "https://mgx-backend-cdn.metadl.com/generate/images/431670/2026-09-15/wp7cvgycak6q/activity-coffee-street.png"
+    }
+  ],
+  "success_count": 4,
+  "failed_count": 0,
+  "running_count": 0,
+  "message": "Generated 4/4 images total"
+}

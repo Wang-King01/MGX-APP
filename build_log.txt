@@ -1,0 +1,8 @@
+﻿- Use build.rollupOptions.output.manualChunks to improve chunking: https://roll
+upjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.[39
+m
+[32m鉁?built in 17.33s[39m
+Prerendered 2 pages:
+  /
+  /blog/
