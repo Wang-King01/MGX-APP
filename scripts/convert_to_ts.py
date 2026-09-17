@@ -32,13 +32,23 @@ def load(name):
     spec.loader.exec_module(mod)
     return mod
 
+# 高德图库实拍照片（fetch_photos.py 产出）
+try:
+    with open(f"{BASE}\\scripts\\poi_photos.json", encoding="utf-8") as f:
+        _PH = json.load(f)
+except Exception:
+    _PH = {"venues": {}, "heroes": {}}
+
 city_metas, entries = [], []
 gid = 0
 for fname in FILES:
     m = load(fname)
     city = m.CITY
+    hero_list = _PH["heroes"].get(city) or []
+    hero_val = hero_list[0] if hero_list else HEROES[city]
+    hero_val = hero_val.replace("http://store.is.autonavi.com", "https://store.is.autonavi.com")
     city_metas.append({
-        "name": city, "adcode": m.ADCODE, "hero": HEROES[city],
+        "name": city, "adcode": m.ADCODE, "hero": hero_val,
         "center": CENTERS[city], "caption": CAPTIONS[city],
     })
     for t in m.ENTRIES:
@@ -46,11 +56,16 @@ for fname in FILES:
         gid += 1
         # 杭州前3条保持原演示 id 1/2/3（initialTeams 引用）
         eid = gid if city != "杭州" or gid > 3 else gid
+        img = IMG_MAP.get((city, venue), "")
+        if not img:
+            urls = _PH["venues"].get(f"{city}|{venue}") or []
+            img = urls[0] if urls else ""
+        img = img.replace("http://store.is.autonavi.com", "https://store.is.autonavi.com")
         entries.append({
             "id": eid, "city": city, "title": title, "category": cat, "venue": venue,
             "location": district, "lng": lng, "lat": lat, "price": price, "people": people,
             "indoor": indoor, "duration": duration, "hot": hot, "tags": tags,
-            "image": IMG_MAP.get((city, venue), ""), "description": desc, "route": route,
+            "image": img, "description": desc, "route": route,
         })
 
 def j(s): return json.dumps(s, ensure_ascii=False)
@@ -92,13 +107,21 @@ export const activities: Activity[] = [
 /** 城市主视觉：杭州沿用原图，其余城市使用本地生成图 */
 export const heroImage = cities[0].hero;
 
-/** 卡片配图：优先原图，无图则用高德静态地图（真实坐标） */
+/** 卡片配图：优先高德图库实拍照片；无照片时回退高德静态地图（真实坐标） */
 export function venueImage(a: Activity): string {{
   if (a.image) return a.image;
+  return staticMapImage(a);
+}}
+
+/** 高德静态地图（兜底配图） */
+export function staticMapImage(a: Activity): string {{
   const c = cities.find(x => x.name === a.city)!;
   const pos = a.lng != null && a.lat != null ? `${{a.lng}},${{a.lat}}` : c.center;
   return `https://restapi.amap.com/v3/staticmap?key=${{AMAP_KEY}}&zoom=15&size=400*300&scale=2&markers=mid,0xF97316,A:${{pos}}`;
 }}
+
+/** 城市hero加载失败时的内嵌插画兜底 */
+export const heroFallbacks: Record<string, string> = {{ "北京": hero_beijing, "上海": hero_shanghai, "厦门": hero_xiamen, "广州": hero_guangzhou }};
 
 /** 高德地图页链接：详情内一键导航 */
 export function amapLink(a: Activity): string {{

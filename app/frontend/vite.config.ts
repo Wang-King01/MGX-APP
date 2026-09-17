@@ -1,9 +1,7 @@
-import { defineConfig } from 'vite';
+import { defineConfig, type Plugin } from 'vite';
 import react from '@vitejs/plugin-react-swc';
 import fs from 'node:fs';
 import path from 'path';
-import { viteSourceLocator } from '@metagptx/vite-plugin-source-locator';
-import { atoms } from '@metagptx/web-sdk/plugins';
 import { vitePrerenderPlugin } from 'vite-prerender-plugin';
 import Sitemap from 'vite-plugin-sitemap';
 import { getBlogRoutes } from './prerender/blog-routes.js';
@@ -39,31 +37,41 @@ function ensureBuildOutDir() {
 }
 
 // https://vitejs.dev/config/
-export default defineConfig(({ command }) => {
+export default defineConfig(async ({ command }) => {
   const blogPrerenderRoutes = command === 'build' ? getBlogRoutes() : [];
 
+  // MGX 平台辅助插件：弹性加载，缺失时跳过（不影响应用功能）
+  const plugins: Plugin[] = [];
+  try {
+    const { viteSourceLocator } = await import('@metagptx/vite-plugin-source-locator');
+    plugins.push(viteSourceLocator({ prefix: 'mgx' }));
+  } catch {
+    console.warn('[vite-config] @metagptx/vite-plugin-source-locator 不可用，已跳过');
+  }
+  plugins.push(react());
+  try {
+    const { atoms } = await import('@metagptx/web-sdk/plugins');
+    plugins.push(atoms());
+  } catch {
+    console.warn('[vite-config] @metagptx/web-sdk 不可用，已跳过');
+  }
+  plugins.push(ensureBuildOutDir());
+  plugins.push(Sitemap({
+    hostname: 'https://atoms.template.com',
+    lastmod: getSitemapLastmod(),
+    readable: true,
+    generateRobotsTxt: true,
+  }));
+  if (blogPrerenderRoutes.length > 0) {
+    plugins.push(...vitePrerenderPlugin({
+      renderTarget: '#root',
+      prerenderScript: path.resolve(__dirname, 'prerender/blog.js'),
+      additionalPrerenderRoutes: blogPrerenderRoutes,
+    }));
+  }
+
   return {
-    plugins: [
-      viteSourceLocator({
-        prefix: 'mgx', // Prefix used to identify source locations; do not change.
-      }),
-      react(),
-      atoms(),
-      ensureBuildOutDir(),
-      Sitemap({
-        hostname: 'https://atoms.template.com',
-        lastmod: getSitemapLastmod(),
-        readable: true,
-        generateRobotsTxt: true,
-      }),
-      ...(blogPrerenderRoutes.length > 0
-        ? vitePrerenderPlugin({
-            renderTarget: '#root',
-            prerenderScript: path.resolve(__dirname, 'prerender/blog.js'),
-            additionalPrerenderRoutes: blogPrerenderRoutes,
-          })
-        : []),
-    ],
+    plugins,
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
