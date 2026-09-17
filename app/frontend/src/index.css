@@ -19,3 +19,20 @@
 .city-tab:hover{background:#f5edda}
 .city-tab.active{background:#f5e5bc;border-color:#ecd398;color:#71521e;font-weight:600}
 @media(max-width:600px){.city-tabs{gap:4px}.city-tab{font-size:10px;padding:4px 8px}}
+
+/* ===== 周末路线规划师 ===== */
+.route-section{margin:26px 0 0}
+.route-badge{font-size:12px;color:#71521e;background:#f5e5bc;border:1px solid #ecd398;border-radius:999px;padding:6px 14px;white-space:nowrap}
+.route-empty{display:flex;flex-direction:column;align-items:center;gap:10px;padding:36px 20px;border:1px dashed #e7e0d3;border-radius:16px;color:#8a7d6b;background:#fffdf7;text-align:center}
+.route-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:18px}
+.route-day{background:#fffdf7;border:1px solid #f0e7d3;border-radius:18px;padding:18px}
+.route-day-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.route-day-head strong{color:#71521e;font-size:16px}
+.route-day-head span{font-size:12px;color:#8a7d6b}
+.route-stops{display:flex;flex-direction:column;gap:10px}
+.route-stop{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid #f0e7d3;border-radius:12px;background:#fff}
+.route-time{flex:0 0 auto;font-size:11px;font-weight:600;color:#71521e;background:#f5e5bc;border-radius:8px;padding:4px 8px;white-space:nowrap}
+.route-main{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.route-main .title-button.small{padding:0;text-align:left}
+.route-meta{display:flex;align-items:center;gap:4px;font-size:11px;color:#8a7d6b;flex-wrap:wrap}
+.route-day-note{margin-top:12px;font-size:11px;color:#a39583;line-height:1.6}
